@@ -24,17 +24,13 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 @property (nonatomic, assign) NSPoint viewSpaceDraggingPoint;
 @property (nonatomic, strong) NSTouch *doubleOnTouch;
 @property (nonatomic, strong) NSView *draggingView;
-
+@property (nonatomic, strong) NSView *draggingShadowView;
 @property (nonatomic, strong) NSMutableArray<NSView *> *views;
+@property (nonatomic, assign) CGSize itemSize;
 
 @end
 
 @implementation GridView
-
-- (void)setInteraction:(Interaction)interaction {
-    NSLog(@"%d -> %d", _interaction, interaction);
-    _interaction = interaction;
-}
 
 - (CGRect)dirtyRect {
     return self.bounds;
@@ -49,7 +45,6 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self setAcceptsTouchEvents:YES];
     [self setWantsRestingTouches:YES];
     self.interaction = None;
-    
     
     self.views = [NSMutableArray new];
     for (int i = 0; i < [self numberOfItems]; i++) {
@@ -72,6 +67,8 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
+    self.itemSize = CGSizeMake(CGRectGetWidth([self dirtyRect]) / [self numberOfCollumns], CGRectGetHeight([self dirtyRect]) / [self numberOfRows]);
+    ;
     [self layoutGrid];
 }
 
@@ -97,17 +94,14 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (CGRect)frameForItemAtIndex:(int)index {
-    CGFloat singleWidth = CGRectGetWidth([self dirtyRect]) / [self numberOfCollumns];
-    CGFloat singleHeight = CGRectGetHeight([self dirtyRect]) / [self numberOfRows];
-    
     int i = 0;
     for (int x = 0; x < [self numberOfRows]; x++) {
         for (int y = 0; y < [self numberOfRows]; y++) {
             if (i == index) {
-                return CGRectMake(singleWidth * x,
-                                  singleHeight * y,
-                                  singleWidth,
-                                  singleHeight);
+                return CGRectMake(self.itemSize.width * x,
+                                  self.itemSize.height * y,
+                                  self.itemSize.width,
+                                  self.itemSize.height);
             }
             i ++;
         }
@@ -116,6 +110,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)beginDragging {
+    [self setupDraggingShadowView];
     for (NSView *view in self.views) {
         if (CGRectContainsPoint(view.frame, [self inViewSpace:self.doubleOnTouch])) {
             self.draggingView = view;
@@ -124,7 +119,19 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     }
 }
 
+- (void)setupDraggingShadowView {
+    self.draggingShadowView = [NSView new];
+    self.draggingShadowView.wantsLayer = YES;
+    self.draggingShadowView.layer.backgroundColor = [NSColor colorWithWhite:1 alpha:0.3].CGColor;
+    [self addSubview:self.draggingShadowView];
+}
+
 - (void)updateDragging {
+    self.draggingShadowView.frame = CGRectMake(self.viewSpaceDraggingPoint.x - self.itemSize.width / 2,
+                                               self.viewSpaceDraggingPoint.y - self.itemSize.height / 2,
+                                               self.itemSize.width,
+                                               self.itemSize.height);
+    
     int previousIndex = [self.views indexOfObject:self.draggingView];
     [self.views removeObject:self.draggingView];
     for (int i = 0; i < [self numberOfItems]; i++) {
@@ -191,6 +198,9 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)touchesEndedWithEvent:(NSEvent *)event {
+    [self.draggingShadowView removeFromSuperview];
+    self.draggingShadowView = nil;
+    
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 0) {
         self.interaction = None;
         [self updateInteraction];
@@ -201,12 +211,6 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         [self updateInteraction];
     }
 }
-
-
-
-
-
-
 
 - (void)touchesCancelledWithEvent:(NSEvent *)event {
     [self touchesEndedWithEvent:event];
