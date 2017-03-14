@@ -151,15 +151,35 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (int)numberOfItems {
-    return 4;
+    return 5;
 }
 
 - (int)numberOfRows {
-    return 2;
+    if ([self numberOfItems] == 1) {
+        return 1;
+    }
+    if ([self numberOfItems] == 2) {
+        return 1;
+    }
+    if ([self numberOfItems] > 2) {
+        return 2;
+    }
+    
+    return 0;
 }
 
 - (int)numberOfCollumns {
-    return 2;
+    if ([self numberOfItems] == 1) {
+        return 1;
+    }
+    if ([self numberOfItems] == 2) {
+        return 2;
+    }
+    if ([self numberOfItems] > 2) {
+        return ([self numberOfItems] / 2) + 1;
+    }
+    
+    return 0;
 }
 
 - (void)touchesBeganWithEvent:(NSEvent *)event {
