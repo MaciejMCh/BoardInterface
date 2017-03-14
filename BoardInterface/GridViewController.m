@@ -95,11 +95,11 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 
 - (CGRect)frameForItemAtIndex:(int)index {
     int i = 0;
-    for (int x = 0; x < [self numberOfRows]; x++) {
-        for (int y = 0; y < [self numberOfRows]; y++) {
+    for (int y = 0; y < [self numberOfRows]; y++) {
+        for (int x = 0; x < [self numberOfCollumns]; x++) {
             if (i == index) {
                 return CGRectMake(self.itemSize.width * x,
-                                  self.itemSize.height * y,
+                                  CGRectGetHeight([self dirtyRect]) - self.itemSize.height * (y + 1),
                                   self.itemSize.width,
                                   self.itemSize.height);
             }
