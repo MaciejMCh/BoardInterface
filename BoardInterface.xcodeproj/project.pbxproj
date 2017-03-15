@@ -14,8 +14,37 @@
 		C256C0741E78028F002216E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C256C0731E78028F002216E3 /* Assets.xcassets */; };
 		C256C0771E78028F002216E3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C256C0751E78028F002216E3 /* Main.storyboard */; };
 		C2D783761E7850AD00E6B789 /* CarousellView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D783751E7850AD00E6B789 /* CarousellView.m */; };
-		C2D783791E785BB700E6B789 /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D783781E785BB700E6B789 /* GridViewController.m */; };
+		C2D783791E785BB700E6B789 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D783781E785BB700E6B789 /* GridView.m */; };
+		C2FD965A1E79760F006E8F53 /* BoardUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C2FD96581E79760F006E8F53 /* BoardUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2FD965D1E79760F006E8F53 /* BoardUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FD96561E79760F006E8F53 /* BoardUI.framework */; };
+		C2FD965E1E79760F006E8F53 /* BoardUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2FD96561E79760F006E8F53 /* BoardUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2FD96631E79761E006E8F53 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D783781E785BB700E6B789 /* GridView.m */; };
+		C2FD96641E797623006E8F53 /* GridEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C22162E91E78BAD80025276D /* GridEntity.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C2FD965B1E79760F006E8F53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C256C05F1E78028F002216E3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C2FD96551E79760F006E8F53;
+			remoteInfo = BoardUI;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C2FD96621E79760F006E8F53 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C2FD965E1E79760F006E8F53 /* BoardUI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C22162E81E78BAD80025276D /* GridEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridEntity.h; sourceTree = "<group>"; };
@@ -31,12 +60,23 @@
 		C256C0781E78028F002216E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2D783741E7850AD00E6B789 /* CarousellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarousellView.h; sourceTree = "<group>"; };
 		C2D783751E7850AD00E6B789 /* CarousellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarousellView.m; sourceTree = "<group>"; };
-		C2D783771E785BB700E6B789 /* GridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewController.h; sourceTree = "<group>"; };
-		C2D783781E785BB700E6B789 /* GridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridViewController.m; sourceTree = "<group>"; };
+		C2D783771E785BB700E6B789 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
+		C2D783781E785BB700E6B789 /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridView.m; sourceTree = "<group>"; };
+		C2FD96561E79760F006E8F53 /* BoardUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoardUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2FD96581E79760F006E8F53 /* BoardUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardUI.h; sourceTree = "<group>"; };
+		C2FD96591E79760F006E8F53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C256C0641E78028F002216E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2FD965D1E79760F006E8F53 /* BoardUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2FD96521E79760F006E8F53 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -50,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				C256C0691E78028F002216E3 /* BoardInterface */,
+				C2FD96571E79760F006E8F53 /* BoardUI */,
 				C256C0681E78028F002216E3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				C256C0671E78028F002216E3 /* BoardInterface.app */,
+				C2FD96561E79760F006E8F53 /* BoardUI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,8 +117,8 @@
 				C256C06D1E78028F002216E3 /* Supporting Files */,
 				C2D783741E7850AD00E6B789 /* CarousellView.h */,
 				C2D783751E7850AD00E6B789 /* CarousellView.m */,
-				C2D783771E785BB700E6B789 /* GridViewController.h */,
-				C2D783781E785BB700E6B789 /* GridViewController.m */,
+				C2D783771E785BB700E6B789 /* GridView.h */,
+				C2D783781E785BB700E6B789 /* GridView.m */,
 				C22162E81E78BAD80025276D /* GridEntity.h */,
 				C22162E91E78BAD80025276D /* GridEntity.m */,
 			);
@@ -91,7 +133,27 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C2FD96571E79760F006E8F53 /* BoardUI */ = {
+			isa = PBXGroup;
+			children = (
+				C2FD96581E79760F006E8F53 /* BoardUI.h */,
+				C2FD96591E79760F006E8F53 /* Info.plist */,
+			);
+			path = BoardUI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C2FD96531E79760F006E8F53 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2FD965A1E79760F006E8F53 /* BoardUI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		C256C0661E78028F002216E3 /* BoardInterface */ = {
@@ -101,15 +163,35 @@
 				C256C0631E78028F002216E3 /* Sources */,
 				C256C0641E78028F002216E3 /* Frameworks */,
 				C256C0651E78028F002216E3 /* Resources */,
+				C2FD96621E79760F006E8F53 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C2FD965C1E79760F006E8F53 /* PBXTargetDependency */,
 			);
 			name = BoardInterface;
 			productName = BoardInterface;
 			productReference = C256C0671E78028F002216E3 /* BoardInterface.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C2FD96551E79760F006E8F53 /* BoardUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2FD96611E79760F006E8F53 /* Build configuration list for PBXNativeTarget "BoardUI" */;
+			buildPhases = (
+				C2FD96511E79760F006E8F53 /* Sources */,
+				C2FD96521E79760F006E8F53 /* Frameworks */,
+				C2FD96531E79760F006E8F53 /* Headers */,
+				C2FD96541E79760F006E8F53 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BoardUI;
+			productName = BoardUI;
+			productReference = C2FD96561E79760F006E8F53 /* BoardUI.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -121,6 +203,11 @@
 				ORGANIZATIONNAME = "Maciej Chmielewski";
 				TargetAttributes = {
 					C256C0661E78028F002216E3 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 76RXF4V6NR;
+						ProvisioningStyle = Automatic;
+					};
+					C2FD96551E79760F006E8F53 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 76RXF4V6NR;
 						ProvisioningStyle = Automatic;
@@ -141,6 +228,7 @@
 			projectRoot = "";
 			targets = (
 				C256C0661E78028F002216E3 /* BoardInterface */,
+				C2FD96551E79760F006E8F53 /* BoardUI */,
 			);
 		};
 /* End PBXProject section */
@@ -155,6 +243,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C2FD96541E79760F006E8F53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -165,13 +260,30 @@
 				C256C0721E78028F002216E3 /* ViewController.m in Sources */,
 				C256C06F1E78028F002216E3 /* main.m in Sources */,
 				C22162EA1E78BAD80025276D /* GridEntity.m in Sources */,
-				C2D783791E785BB700E6B789 /* GridViewController.m in Sources */,
+				C2D783791E785BB700E6B789 /* GridView.m in Sources */,
 				C256C06C1E78028F002216E3 /* AppDelegate.m in Sources */,
 				C2D783761E7850AD00E6B789 /* CarousellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C2FD96511E79760F006E8F53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2FD96641E797623006E8F53 /* GridEntity.m in Sources */,
+				C2FD96631E79761E006E8F53 /* GridView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C2FD965C1E79760F006E8F53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C2FD96551E79760F006E8F53 /* BoardUI */;
+			targetProxy = C2FD965B1E79760F006E8F53 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C256C0751E78028F002216E3 /* Main.storyboard */ = {
@@ -298,6 +410,52 @@
 			};
 			name = Release;
 		};
+		C2FD965F1E79760F006E8F53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 76RXF4V6NR;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = BoardUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mch.BoardUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C2FD96601E79760F006E8F53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 76RXF4V6NR;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = BoardUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mch.BoardUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -318,6 +476,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		C2FD96611E79760F006E8F53 /* Build configuration list for PBXNativeTarget "BoardUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2FD965F1E79760F006E8F53 /* Debug */,
+				C2FD96601E79760F006E8F53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

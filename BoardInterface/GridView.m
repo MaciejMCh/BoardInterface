@@ -6,7 +6,7 @@
 //  Copyright © 2017 Maciej Chmielewski. All rights reserved.
 //
 
-#import "GridViewController.h"
+#import "GridView.h"
 
 typedef NS_ENUM(NSUInteger, Interaction) {
     None,
@@ -29,6 +29,16 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 @end
 
 @implementation GridView
+
+#pragma mark -
+#pragma mark - Accessors
+
+- (NSMutableArray<GridEntity *> *)entities {
+    if (!_entities) {
+        _entities = [NSMutableArray new];
+    }
+    return _entities;
+}
 
 #pragma mark -
 #pragma mark - Dev
@@ -59,11 +69,10 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 #pragma mark - System callbacks
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     [self setAcceptsTouchEvents:YES];
     [self setWantsRestingTouches:YES];
     self.interaction = None;
-    
-    self.entities = [NSMutableArray new];
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -186,6 +195,17 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 #pragma mark -
+#pragma mark - Action
+
+- (void)performAction {
+    for (GridEntity *entity in self.entities) {
+        if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.doubleOnTouch])) {
+            entity.action();
+        }
+    }
+}
+
+#pragma mark -
 #pragma mark - Dragging
 
 - (void)beginDragging {
@@ -303,6 +323,9 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 0) {
         if (self.interaction == Dragging) {
             [self successDragging];
+        }
+        if (self.interaction == DoubleOn) {
+            [self performAction];
         }
         self.interaction = None;
         [self updateInteraction];
