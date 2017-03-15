@@ -12,5 +12,6 @@
 @interface GridView : NSView
 
 - (void)addEntity:(GridEntity *)entity;
+- (void)deleteEntity:(GridEntity *)entity;
 
 @end

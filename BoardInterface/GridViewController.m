@@ -15,7 +15,6 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     Dragging
 };
 
-
 @interface GridView ()
 
 @property (nonatomic, assign) Interaction interaction;
@@ -46,7 +45,14 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self.entities addObject:entity];
     [self addSubview:entity.view];
     [self resizeSubviewsWithOldSize:[self dirtyRect].size];
-    NSLog(@"ADD");
+    [self updateInteraction];
+}
+
+- (void)deleteEntity:(GridEntity *)entity {
+    [self.entities removeObject:entity];
+    [entity.view removeFromSuperview];
+    [self resizeSubviewsWithOldSize:[self dirtyRect].size];
+    [self updateInteraction];
 }
 
 #pragma mark - 
@@ -77,8 +83,20 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     return x;
 }
 
+- (CGFloat)maxX:(NSSet<NSTouch *> *)touches {
+    CGFloat x = 0;
+    for (NSTouch *touch in touches) {
+        x = MAX(x, touch.normalizedPosition.x);
+    }
+    return x;
+}
+
 - (CGFloat)padding {
     return 10;
+}
+
+- (CGFloat)normalizedMarginSize {
+    return 0.05;
 }
 
 - (int)numberOfItems {
@@ -150,7 +168,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 
 - (void)updateInteraction {
     for (GridEntity *entity in self.entities) {
-        entity.view.layer.backgroundColor = [NSColor redColor].CGColor;
+        entity.view.layer.backgroundColor = [NSColor whiteColor].CGColor;
         if (self.interaction == Focusing) {
             if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.focusingTouch])) {
                 entity.view.layer.backgroundColor = [NSColor greenColor].CGColor;
@@ -229,7 +247,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         [self updateInteraction];
     }
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 2) {
-        if ([self minX:event] < 0.01) {
+        if ([self minX:event] < [self normalizedMarginSize]) {
             GridEntity *newEntity = [GridEntity blank];
             [self addEntity:newEntity];
             self.interaction = Dragging;
@@ -272,6 +290,16 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)endTouches:(NSEvent *)event {
+    if (self.interaction == Dragging) {
+        if ([self maxX:[event touchesMatchingPhase:NSTouchPhaseEnded inView:self]] + [self normalizedMarginSize] > 1) {
+            self.interaction = None;
+            [self.draggingShadowView removeFromSuperview];
+            self.draggingShadowView = nil;
+            [self deleteEntity:self.draggingEntity];
+            return;
+        }
+    }
+    
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 0) {
         if (self.interaction == Dragging) {
             [self successDragging];
