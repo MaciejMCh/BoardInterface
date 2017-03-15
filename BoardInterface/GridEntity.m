@@ -10,15 +10,4 @@
 
 @implementation GridEntity
 
-+ (GridEntity *)blank {
-    GridEntity *gridEntity = [GridEntity new];
-    NSView *view = [NSView new];
-    view.wantsLayer = YES;
-    view.layer.borderColor = [NSColor blackColor].CGColor;
-    view.layer.borderWidth = 2;
-    gridEntity.view = view;
-    gridEntity.model = @"blank";
-    return gridEntity;
-}
-
 @end

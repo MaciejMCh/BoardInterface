@@ -11,7 +11,10 @@
 
 @interface GridView : NSView
 
-- (void)addEntity:(GridEntity *)entity;
-- (void)deleteEntity:(GridEntity *)entity;
+@property (nonatomic, copy, nonnull) GridEntity * _Nonnull (^blankGridFactory)(void);
+
+- (void)addEntity:(GridEntity * _Nonnull)entity;
+- (void)deleteEntity:(GridEntity * _Nonnull)entity;
+- (void)replaceEntity:(GridEntity * _Nonnull)old withEntity:(GridEntity * _Nonnull)newEntity;
 
 @end

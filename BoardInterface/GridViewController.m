@@ -248,7 +248,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     }
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 2) {
         if ([self minX:event] < [self normalizedMarginSize]) {
-            GridEntity *newEntity = [GridEntity blank];
+            GridEntity *newEntity = self.blankGridFactory();
             [self addEntity:newEntity];
             self.interaction = Dragging;
             self.draggingEntity = newEntity;

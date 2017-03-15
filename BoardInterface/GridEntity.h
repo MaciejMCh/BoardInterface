@@ -13,7 +13,6 @@
 
 @property (nonatomic, strong) id model;
 @property (nonatomic, strong) NSView *view;
-
-+ (GridEntity *)blank;
+@property (nonatomic, copy) void (^action)(void);
 
 @end
