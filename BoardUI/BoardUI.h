@@ -17,3 +17,4 @@ FOUNDATION_EXPORT const unsigned char BoardUIVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <BoardUI/PublicHeader.h>
 
 #import "GridView.h"
+#import "SlidersStackView.h"

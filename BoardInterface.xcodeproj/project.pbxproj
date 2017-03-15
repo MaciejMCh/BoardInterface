@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		C22162EA1E78BAD80025276D /* GridEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C22162E91E78BAD80025276D /* GridEntity.m */; };
+		C24362FF1E79E82D008543EC /* Slider.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FD967F1E79A14D006E8F53 /* Slider.m */; };
+		C24363001E79E831008543EC /* SlidersStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FD96791E799FE1006E8F53 /* SlidersStackView.m */; };
 		C256C06C1E78028F002216E3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C256C06B1E78028F002216E3 /* AppDelegate.m */; };
 		C256C06F1E78028F002216E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C256C06E1E78028F002216E3 /* main.m */; };
 		C256C0741E78028F002216E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C256C0731E78028F002216E3 /* Assets.xcassets */; };
 		C256C0771E78028F002216E3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C256C0751E78028F002216E3 /* Main.storyboard */; };
 		C2D783761E7850AD00E6B789 /* CarousellView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D783751E7850AD00E6B789 /* CarousellView.m */; };
 		C2D783791E785BB700E6B789 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D783781E785BB700E6B789 /* GridView.m */; };
+		C2F2ADA71E79F11300C604D0 /* Slider.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2FD96811E79A3E0006E8F53 /* Slider.xib */; };
+		C2F2ADAA1E79F33100C604D0 /* SliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2ADA91E79F33100C604D0 /* SliderView.m */; };
+		C2F2ADAB1E79F39800C604D0 /* SliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F2ADA91E79F33100C604D0 /* SliderView.m */; };
 		C2FD965A1E79760F006E8F53 /* BoardUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C2FD96581E79760F006E8F53 /* BoardUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2FD965D1E79760F006E8F53 /* BoardUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FD96561E79760F006E8F53 /* BoardUI.framework */; };
 		C2FD965E1E79760F006E8F53 /* BoardUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2FD96561E79760F006E8F53 /* BoardUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -62,6 +67,8 @@
 		C2D783751E7850AD00E6B789 /* CarousellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarousellView.m; sourceTree = "<group>"; };
 		C2D783771E785BB700E6B789 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
 		C2D783781E785BB700E6B789 /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridView.m; sourceTree = "<group>"; };
+		C2F2ADA81E79F33100C604D0 /* SliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderView.h; sourceTree = "<group>"; };
+		C2F2ADA91E79F33100C604D0 /* SliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderView.m; sourceTree = "<group>"; };
 		C2FD96561E79760F006E8F53 /* BoardUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoardUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2FD96581E79760F006E8F53 /* BoardUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardUI.h; sourceTree = "<group>"; };
 		C2FD96591E79760F006E8F53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -161,6 +168,8 @@
 				C2FD967E1E79A14D006E8F53 /* Slider.h */,
 				C2FD967F1E79A14D006E8F53 /* Slider.m */,
 				C2FD96811E79A3E0006E8F53 /* Slider.xib */,
+				C2F2ADA81E79F33100C604D0 /* SliderView.h */,
+				C2F2ADA91E79F33100C604D0 /* SliderView.m */,
 			);
 			name = Slider;
 			sourceTree = "<group>";
@@ -280,6 +289,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F2ADA71E79F11300C604D0 /* Slider.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +305,7 @@
 				C2FD967A1E799FE1006E8F53 /* SlidersStackView.m in Sources */,
 				C2D783791E785BB700E6B789 /* GridView.m in Sources */,
 				C256C06C1E78028F002216E3 /* AppDelegate.m in Sources */,
+				C2F2ADAA1E79F33100C604D0 /* SliderView.m in Sources */,
 				C2D783761E7850AD00E6B789 /* CarousellView.m in Sources */,
 				C2FD96801E79A14D006E8F53 /* Slider.m in Sources */,
 			);
@@ -304,7 +315,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F2ADAB1E79F39800C604D0 /* SliderView.m in Sources */,
+				C24363001E79E831008543EC /* SlidersStackView.m in Sources */,
 				C2FD96641E797623006E8F53 /* GridEntity.m in Sources */,
+				C24362FF1E79E82D008543EC /* Slider.m in Sources */,
 				C2FD96631E79761E006E8F53 /* GridView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -36,6 +36,10 @@
                 <constraint firstItem="dmm-fS-zW2" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="50" id="mQc-td-Uln"/>
                 <constraint firstItem="dmm-fS-zW2" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="xio-Jf-BLQ"/>
             </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="dmm-fS-zW2" id="uHy-F0-u1Q"/>
+                <outlet property="valueLabel" destination="63k-QY-rxR" id="EhP-Hv-b6j"/>
+            </connections>
         </customView>
     </objects>
 </document>

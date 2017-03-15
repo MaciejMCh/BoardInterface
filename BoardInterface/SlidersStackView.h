@@ -14,12 +14,3 @@
 @property (nonatomic, strong) NSArray<Slider *> *sliders;
 
 @end
-
-
-@interface SliderView : NSView
-
-- (void)applyFocusedStyle;
-- (void)applyUnfocusedStyle;
-- (void)applyEditingStyle;
-
-@end

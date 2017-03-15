@@ -10,6 +10,24 @@
 
 @implementation Slider
 
+- (instancetype)initWithName:(NSString *)name
+                      values:(NSArray<NSString *> *)values
+               selectedIndex:(int)selectedIndex
+                 valueUpdate:(void (^)(void))valueUpdate {
+    self = [super init];
+    self.name = name;
+    self.values = values;
+    self.selectedIndex = selectedIndex;
+    self.valueUpdate = valueUpdate;
+    return self;
+}
 
+- (void)setSelectedIndex:(int)selectedIndex {
+    _selectedIndex = selectedIndex % self.values.count;
+}
+
+- (NSString *)selectedValue {
+    return self.values[self.selectedIndex];
+}
 
 @end

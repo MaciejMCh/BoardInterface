@@ -16,4 +16,11 @@
 
 @property (nonatomic, copy) void (^valueUpdate)(void);
 
+- (instancetype)initWithName:(NSString *)name
+                      values:(NSArray<NSString *> *)values
+               selectedIndex:(int)selectedIndex
+                 valueUpdate:(void (^)(void))valueUpdate;
+
+- (NSString *)selectedValue;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "SlidersStackView.h"
+#import "SliderView.h"
 
 @interface SlidersStackView ()
 
@@ -22,18 +23,24 @@
 #pragma mark -
 #pragma mark - Accessors
 
-- (NSArray<Slider *> *)sliders {
-    if (!_sliders) {
-        _sliders = @[[Slider new], [Slider new]];
-    }
-    return _sliders;
-}
-
 - (NSMutableArray<SliderView *> *)sliderViews {
     if (!_sliderViews) {
         _sliderViews = [NSMutableArray new];
     }
     return _sliderViews;
+}
+
+- (void)setSliders:(NSArray<Slider *> *)sliders {
+    _sliders = sliders;
+    
+    for (Slider *slider in self.sliders) {
+        SliderView *sliderView = [self createSldierView:slider];
+        sliderView.nameLabel.stringValue = slider.name;
+        sliderView.valueLabel.stringValue = slider.selectedValue;
+        [self addSubview:sliderView];
+        [self.sliderViews addObject:sliderView];
+    }
+    [self resizeSubviewsWithOldSize:[self dirtyRect].size];
 }
 
 - (CGFloat)normalizedSpaceValueTick {
@@ -45,15 +52,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
     [self setAcceptsTouchEvents:YES];
     [self setWantsRestingTouches:YES];
-    
-    for (Slider *slider in self.sliders) {
-        SliderView *sliderView = [self createSldierView:slider];
-        [self addSubview:sliderView];
-        [self.sliderViews addObject:sliderView];
-    }
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -74,7 +74,7 @@
 
 - (SliderView *)createSldierView:(Slider *)slider {
     NSArray *nibContents;
-    [[NSBundle mainBundle] loadNibNamed:@"Slider" owner:nil topLevelObjects:&nibContents];
+    [[NSBundle bundleForClass:[Slider class]] loadNibNamed:@"Slider" owner:nil topLevelObjects:&nibContents];
     for (id element in nibContents) {
         if ([element isKindOfClass:[SliderView class]]) {
             [element setWantsLayer:YES];
@@ -170,6 +170,9 @@
 - (void)valueChanged:(int)steps {
     self.editingSlider.selectedIndex += steps;
     self.editingSlider.valueUpdate();
+    
+    SliderView *editingSliderView = self.sliderViews[[self.sliders indexOfObject:self.editingSlider]];
+    editingSliderView.valueLabel.stringValue = [self.editingSlider selectedValue];
 }
 
 - (void)touchesEndedWithEvent:(NSEvent *)event {
@@ -178,25 +181,6 @@
 
 - (void)touchesCancelledWithEvent:(NSEvent *)event {
     [self touchesEndedWithEvent:event];
-}
-
-@end
-
-
-@implementation SliderView
-
-- (void)applyUnfocusedStyle {
-    self.layer.borderWidth = 0;
-}
-
-- (void)applyFocusedStyle {
-    self.layer.borderWidth = 15;
-    self.layer.borderColor = [NSColor greenColor].CGColor;
-}
-
-- (void)applyEditingStyle {
-    self.layer.borderWidth = 15;
-    self.layer.borderColor = [NSColor orangeColor].CGColor;
 }
 
 @end
