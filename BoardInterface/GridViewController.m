@@ -58,24 +58,6 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     self.interaction = None;
     
     self.entities = [NSMutableArray new];
-    
-    for (int i = 0; i < 4; i ++) {
-        NSView *view = [NSView new];
-        view.wantsLayer = YES;
-        view.layer.borderColor = [NSColor blackColor].CGColor;
-        view.layer.borderWidth = 2;
-        
-        NSTextField *textField = [[NSTextField alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        textField.stringValue = [NSString stringWithFormat:@"%d", i];
-        
-        [view addSubview:textField];
-        
-        GridEntity *entity = [GridEntity new];
-        entity.view = view;
-        entity.model = [NSNumber numberWithInt:i];
-        
-        [self addEntity:entity];
-    }
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -218,9 +200,11 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         }
     }
     
-    NSUInteger dragSourceIndex = [self.entities indexOfObject:self.draggingEntity];
-    [self.entities exchangeObjectAtIndex:dragSourceIndex withObjectAtIndex:dragDestinationIndex];
-    [self layoutGrid];
+    if (dragDestinationIndex < [self numberOfItems]) {
+        NSUInteger dragSourceIndex = [self.entities indexOfObject:self.draggingEntity];
+        [self.entities exchangeObjectAtIndex:dragSourceIndex withObjectAtIndex:dragDestinationIndex];
+        [self layoutGrid];
+    }
 }
 
 - (void)cancelDragging {
