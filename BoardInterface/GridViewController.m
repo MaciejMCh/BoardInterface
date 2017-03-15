@@ -58,6 +58,24 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     self.interaction = None;
     
     self.entities = [NSMutableArray new];
+    
+    for (int i = 0; i < 4; i ++) {
+        NSView *view = [NSView new];
+        view.wantsLayer = YES;
+        view.layer.borderColor = [NSColor blackColor].CGColor;
+        view.layer.borderWidth = 2;
+        
+        NSTextField *textField = [[NSTextField alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        textField.stringValue = [NSString stringWithFormat:@"%d", i];
+        
+        [view addSubview:textField];
+        
+        GridEntity *entity = [GridEntity new];
+        entity.view = view;
+        entity.model = [NSNumber numberWithInt:i];
+        
+        [self addEntity:entity];
+    }
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -72,6 +90,11 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         if (self.interaction == Focusing) {
             if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.focusingTouch])) {
                 entity.view.layer.backgroundColor = [NSColor greenColor].CGColor;
+            }
+        }
+        if (self.interaction == Dragging) {
+            if (CGRectContainsPoint(entity.view.frame, self.viewSpaceDraggingPoint)) {
+                entity.view.layer.backgroundColor = [[NSColor orangeColor] colorWithAlphaComponent:0.5].CGColor;
             }
         }
     }
@@ -126,19 +149,6 @@ typedef NS_ENUM(NSUInteger, Interaction) {
                                                self.viewSpaceDraggingPoint.y - self.itemSize.height / 2,
                                                self.itemSize.width,
                                                self.itemSize.height);
-    
-    int previousIndex = [self.entities indexOfObject:self.draggingEntity];
-    [self.entities removeObject:self.draggingEntity];
-    for (int i = 0; i < [self numberOfItems]; i++) {
-        if (CGRectContainsPoint([self frameForItemAtIndex:i], self.viewSpaceDraggingPoint)) {
-            [self.entities insertObject:self.draggingEntity atIndex:i];
-            [self layoutGrid];
-            return;
-        }
-    }
-    
-    [self.entities insertObject:self.draggingEntity atIndex:previousIndex];
-    [self layoutGrid];
 }
 
 - (CGFloat)padding {
