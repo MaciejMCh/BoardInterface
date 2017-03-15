@@ -15,6 +15,6 @@
 
 - (void)addEntity:(GridEntity * _Nonnull)entity;
 - (void)deleteEntity:(GridEntity * _Nonnull)entity;
-- (void)replaceEntity:(GridEntity * _Nonnull)old withEntity:(GridEntity * _Nonnull)newEntity;
+- (void)replaceEntity:(GridEntity * _Nonnull)oldEntity withEntity:(GridEntity * _Nonnull)newEntity;
 
 @end

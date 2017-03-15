@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 @property (nonatomic, strong) NSView *draggingShadowView;
 @property (nonatomic, strong) NSMutableArray<GridEntity *> *entities;
 @property (nonatomic, assign) CGSize itemSize;
+@property (nonatomic, assign) int touchesBeingFilteringCount;
 
 @end
 
@@ -65,6 +66,16 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self updateInteraction];
 }
 
+- (void)replaceEntity:(GridEntity * _Nonnull)oldEntity withEntity:(GridEntity * _Nonnull)newEntity {
+    int oldIndex = [self.entities indexOfObject:oldEntity];
+    [self.entities replaceObjectAtIndex:oldIndex withObject:newEntity];
+    [oldEntity.view removeFromSuperview];
+    [self addSubview:newEntity.view];
+    
+    [self resizeSubviewsWithOldSize:[self dirtyRect].size];
+    [self updateInteraction];
+}
+
 #pragma mark - 
 #pragma mark - System callbacks
 
@@ -73,6 +84,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self setAcceptsTouchEvents:YES];
     [self setWantsRestingTouches:YES];
     self.interaction = None;
+    self.touchesBeingFilteringCount = 0;
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -305,8 +317,14 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)touchesEndedWithEvent:(NSEvent *)event {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(endTouches:) withObject:event afterDelay:0.1];
+    self.touchesBeingFilteringCount ++;
+    __weak typeof(self) wSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        wSelf.touchesBeingFilteringCount --;
+        if (wSelf.touchesBeingFilteringCount == 0) {
+            [wSelf endTouches:event];
+        }
+    });
 }
 
 - (void)endTouches:(NSEvent *)event {
