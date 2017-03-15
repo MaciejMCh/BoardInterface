@@ -223,6 +223,11 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self layoutGrid];
 }
 
+- (void)cancelDragging {
+    [self.draggingShadowView removeFromSuperview];
+    self.draggingShadowView = nil;
+}
+
 - (void)setupDraggingShadowView {
     self.draggingShadowView = [NSView new];
     self.draggingShadowView.wantsLayer = YES;
@@ -291,6 +296,9 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         [self updateInteraction];
     }
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 1) {
+        if (self.interaction == Dragging) {
+            [self cancelDragging];
+        }
         self.interaction = Focusing;
         self.focusingTouch = [event touchesMatchingPhase:NSTouchPhaseTouching inView:self].allObjects.firstObject;
         [self updateInteraction];
