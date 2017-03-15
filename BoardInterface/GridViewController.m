@@ -8,7 +8,6 @@
 
 #import "GridViewController.h"
 
-
 typedef NS_ENUM(NSUInteger, Interaction) {
     None,
     Focusing,
@@ -23,14 +22,26 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 @property (nonatomic, strong) NSTouch *focusingTouch;
 @property (nonatomic, assign) NSPoint viewSpaceDraggingPoint;
 @property (nonatomic, strong) NSTouch *doubleOnTouch;
-@property (nonatomic, strong) NSView *draggingView;
+@property (nonatomic, strong) GridEntity *draggingEntity;
 @property (nonatomic, strong) NSView *draggingShadowView;
-@property (nonatomic, strong) NSMutableArray<NSView *> *views;
+@property (nonatomic, strong) NSMutableArray<GridEntity *> *entities;
 @property (nonatomic, assign) CGSize itemSize;
 
 @end
 
 @implementation GridView
+
+- (void)setInteraction:(Interaction)interaction {
+    NSLog(@"%d -> %d", _interaction, interaction);
+    _interaction = interaction;
+}
+
+- (void)addEntity:(GridEntity *)entity {
+    [self.entities addObject:entity];
+    [self addSubview:entity.view];
+    [self resizeSubviewsWithOldSize:[self dirtyRect].size];
+    NSLog(@"ADD");
+}
 
 - (CGRect)dirtyRect {
     return self.bounds;
@@ -46,24 +57,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self setWantsRestingTouches:YES];
     self.interaction = None;
     
-    self.views = [NSMutableArray new];
-    for (int i = 0; i < [self numberOfItems]; i++) {
-        NSView *view = [NSView new];
-        view.wantsLayer = YES;
-        view.layer.backgroundColor = [NSColor redColor].CGColor;
-        view.layer.borderColor = [NSColor blackColor].CGColor;
-        view.layer.borderWidth = 2;
-        
-        NSTextField *textField = [[NSTextField alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        textField.stringValue = [NSString stringWithFormat:@"%d", i];
-        [view addSubview:textField];
-        
-        [self addSubview:view];
-        [self.views addObject:view];
-    }
-    
-    [self layoutGrid];
-    [self updateInteraction];
+    self.entities = [NSMutableArray new];
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
@@ -73,23 +67,23 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)updateInteraction {
-    for (NSView *view in self.views) {
-        view.layer.backgroundColor = [NSColor redColor].CGColor;
+    for (GridEntity *entity in self.entities) {
+        entity.view.layer.backgroundColor = [NSColor redColor].CGColor;
         if (self.interaction == Focusing) {
-            if (CGRectContainsPoint(view.frame, [self inViewSpace:self.focusingTouch])) {
-                view.layer.backgroundColor = [NSColor greenColor].CGColor;
+            if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.focusingTouch])) {
+                entity.view.layer.backgroundColor = [NSColor greenColor].CGColor;
             }
         }
     }
     if (self.interaction == Dragging) {
-        self.draggingView.layer.backgroundColor = [NSColor orangeColor].CGColor;
+        self.draggingEntity.view.layer.backgroundColor = [NSColor orangeColor].CGColor;
     }
 }
 
 - (void)layoutGrid {
     for (int i = 0; i < [self numberOfItems]; i++) {
         CGRect rect = [self frameForItemAtIndex:i];
-        self.views[i].frame = rect;
+        self.entities[i].view.frame = rect;
     }
 }
 
@@ -110,13 +104,14 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)beginDragging {
-    [self setupDraggingShadowView];
-    for (NSView *view in self.views) {
-        if (CGRectContainsPoint(view.frame, [self inViewSpace:self.doubleOnTouch])) {
-            self.draggingView = view;
+    for (GridEntity *entity in self.entities) {
+        if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.doubleOnTouch])) {
+            [self setupDraggingShadowView];
+            self.draggingEntity = entity;
             return;
         }
     }
+    self.interaction = None;
 }
 
 - (void)setupDraggingShadowView {
@@ -132,17 +127,17 @@ typedef NS_ENUM(NSUInteger, Interaction) {
                                                self.itemSize.width,
                                                self.itemSize.height);
     
-    int previousIndex = [self.views indexOfObject:self.draggingView];
-    [self.views removeObject:self.draggingView];
+    int previousIndex = [self.entities indexOfObject:self.draggingEntity];
+    [self.entities removeObject:self.draggingEntity];
     for (int i = 0; i < [self numberOfItems]; i++) {
         if (CGRectContainsPoint([self frameForItemAtIndex:i], self.viewSpaceDraggingPoint)) {
-            [self.views insertObject:self.draggingView atIndex:i];
+            [self.entities insertObject:self.draggingEntity atIndex:i];
             [self layoutGrid];
             return;
         }
     }
     
-    [self.views insertObject:self.draggingView atIndex:previousIndex];
+    [self.entities insertObject:self.draggingEntity atIndex:previousIndex];
     [self layoutGrid];
 }
 
@@ -151,7 +146,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (int)numberOfItems {
-    return 5;
+    return self.entities.count;
 }
 
 - (int)numberOfRows {
@@ -176,10 +171,18 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         return 2;
     }
     if ([self numberOfItems] > 2) {
-        return ([self numberOfItems] / 2) + 1;
+        return (int)ceil((float)[self numberOfItems] / 2.0);
     }
     
     return 0;
+}
+
+- (CGFloat)minX:(NSEvent *)event {
+    CGFloat x = CGFLOAT_MAX;
+    for (NSTouch *touch in [event touchesMatchingPhase:NSTouchPhaseTouching inView:self]) {
+        x = MIN(x, touch.normalizedPosition.x);
+    }
+    return x;
 }
 
 - (void)touchesBeganWithEvent:(NSEvent *)event {
@@ -189,6 +192,15 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         [self updateInteraction];
     }
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 2) {
+        if ([self minX:event] < 0.01) {
+            GridEntity *newEntity = [GridEntity blank];
+            [self addEntity:newEntity];
+            self.interaction = Dragging;
+            self.draggingEntity = newEntity;
+            [self setupDraggingShadowView];
+            
+            return;
+        }
         self.interaction = DoubleOn;
         self.doubleOnTouch = [event touchesMatchingPhase:NSTouchPhaseTouching inView:self].allObjects.firstObject;
         [self updateInteraction];

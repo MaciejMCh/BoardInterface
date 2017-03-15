@@ -7,7 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "GridEntity.h"
 
 @interface GridView : NSView
+
+- (void)addEntity:(GridEntity *)entity;
 
 @end

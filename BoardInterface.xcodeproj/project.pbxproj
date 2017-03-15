@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C22162EA1E78BAD80025276D /* GridEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C22162E91E78BAD80025276D /* GridEntity.m */; };
 		C256C06C1E78028F002216E3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C256C06B1E78028F002216E3 /* AppDelegate.m */; };
 		C256C06F1E78028F002216E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C256C06E1E78028F002216E3 /* main.m */; };
 		C256C0721E78028F002216E3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C256C0711E78028F002216E3 /* ViewController.m */; };
@@ -17,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C22162E81E78BAD80025276D /* GridEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridEntity.h; sourceTree = "<group>"; };
+		C22162E91E78BAD80025276D /* GridEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridEntity.m; sourceTree = "<group>"; };
 		C256C0671E78028F002216E3 /* BoardInterface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoardInterface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C256C06A1E78028F002216E3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C256C06B1E78028F002216E3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -74,6 +77,8 @@
 				C2D783751E7850AD00E6B789 /* CarousellView.m */,
 				C2D783771E785BB700E6B789 /* GridViewController.h */,
 				C2D783781E785BB700E6B789 /* GridViewController.m */,
+				C22162E81E78BAD80025276D /* GridEntity.h */,
+				C22162E91E78BAD80025276D /* GridEntity.m */,
 			);
 			path = BoardInterface;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 			files = (
 				C256C0721E78028F002216E3 /* ViewController.m in Sources */,
 				C256C06F1E78028F002216E3 /* main.m in Sources */,
+				C22162EA1E78BAD80025276D /* GridEntity.m in Sources */,
 				C2D783791E785BB700E6B789 /* GridViewController.m in Sources */,
 				C256C06C1E78028F002216E3 /* AppDelegate.m in Sources */,
 				C2D783761E7850AD00E6B789 /* CarousellView.m in Sources */,
