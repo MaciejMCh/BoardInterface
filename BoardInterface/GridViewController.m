@@ -31,10 +31,16 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 
 @implementation GridView
 
+#pragma mark -
+#pragma mark - Dev
+
 - (void)setInteraction:(Interaction)interaction {
     NSLog(@"%d -> %d", _interaction, interaction);
     _interaction = interaction;
 }
+
+#pragma mark -
+#pragma mark - Interface
 
 - (void)addEntity:(GridEntity *)entity {
     [self.entities addObject:entity];
@@ -43,14 +49,8 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     NSLog(@"ADD");
 }
 
-- (CGRect)dirtyRect {
-    return self.bounds;
-}
-
-- (CGPoint)inViewSpace:(NSTouch *)touch {
-    return CGPointMake(CGRectGetWidth([self dirtyRect]) * touch.normalizedPosition.x,
-                       CGRectGetHeight([self dirtyRect]) * touch.normalizedPosition.y);
-}
+#pragma mark - 
+#pragma mark - System callbacks
 
 - (void)awakeFromNib {
     [self setAcceptsTouchEvents:YES];
@@ -84,71 +84,15 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self layoutGrid];
 }
 
-- (void)updateInteraction {
-    for (GridEntity *entity in self.entities) {
-        entity.view.layer.backgroundColor = [NSColor redColor].CGColor;
-        if (self.interaction == Focusing) {
-            if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.focusingTouch])) {
-                entity.view.layer.backgroundColor = [NSColor greenColor].CGColor;
-            }
-        }
-        if (self.interaction == Dragging) {
-            if (CGRectContainsPoint(entity.view.frame, self.viewSpaceDraggingPoint)) {
-                entity.view.layer.backgroundColor = [[NSColor orangeColor] colorWithAlphaComponent:0.5].CGColor;
-            }
-        }
-    }
-    if (self.interaction == Dragging) {
-        self.draggingEntity.view.layer.backgroundColor = [NSColor orangeColor].CGColor;
-    }
-}
+#pragma mark -
+#pragma mark - Layouting math
 
-- (void)layoutGrid {
-    for (int i = 0; i < [self numberOfItems]; i++) {
-        CGRect rect = [self frameForItemAtIndex:i];
-        self.entities[i].view.frame = rect;
+- (CGFloat)minX:(NSEvent *)event {
+    CGFloat x = CGFLOAT_MAX;
+    for (NSTouch *touch in [event touchesMatchingPhase:NSTouchPhaseTouching inView:self]) {
+        x = MIN(x, touch.normalizedPosition.x);
     }
-}
-
-- (CGRect)frameForItemAtIndex:(int)index {
-    int i = 0;
-    for (int y = 0; y < [self numberOfRows]; y++) {
-        for (int x = 0; x < [self numberOfCollumns]; x++) {
-            if (i == index) {
-                return CGRectMake(self.itemSize.width * x,
-                                  CGRectGetHeight([self dirtyRect]) - self.itemSize.height * (y + 1),
-                                  self.itemSize.width,
-                                  self.itemSize.height);
-            }
-            i ++;
-        }
-    }
-    return CGRectZero;
-}
-
-- (void)beginDragging {
-    for (GridEntity *entity in self.entities) {
-        if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.doubleOnTouch])) {
-            [self setupDraggingShadowView];
-            self.draggingEntity = entity;
-            return;
-        }
-    }
-    self.interaction = None;
-}
-
-- (void)setupDraggingShadowView {
-    self.draggingShadowView = [NSView new];
-    self.draggingShadowView.wantsLayer = YES;
-    self.draggingShadowView.layer.backgroundColor = [NSColor colorWithWhite:1 alpha:0.3].CGColor;
-    [self addSubview:self.draggingShadowView];
-}
-
-- (void)updateDragging {
-    self.draggingShadowView.frame = CGRectMake(self.viewSpaceDraggingPoint.x - self.itemSize.width / 2,
-                                               self.viewSpaceDraggingPoint.y - self.itemSize.height / 2,
-                                               self.itemSize.width,
-                                               self.itemSize.height);
+    return x;
 }
 
 - (CGFloat)padding {
@@ -156,7 +100,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (int)numberOfItems {
-    return self.entities.count;
+    return (int)self.entities.count;
 }
 
 - (int)numberOfRows {
@@ -187,13 +131,107 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     return 0;
 }
 
-- (CGFloat)minX:(NSEvent *)event {
-    CGFloat x = CGFLOAT_MAX;
-    for (NSTouch *touch in [event touchesMatchingPhase:NSTouchPhaseTouching inView:self]) {
-        x = MIN(x, touch.normalizedPosition.x);
-    }
-    return x;
+- (CGRect)dirtyRect {
+    return self.bounds;
 }
+
+- (CGPoint)inViewSpace:(NSTouch *)touch {
+    return CGPointMake(CGRectGetWidth([self dirtyRect]) * touch.normalizedPosition.x,
+                       CGRectGetHeight([self dirtyRect]) * touch.normalizedPosition.y);
+}
+
+- (void)layoutGrid {
+    for (int i = 0; i < [self numberOfItems]; i++) {
+        CGRect rect = [self frameForItemAtIndex:i];
+        self.entities[i].view.frame = rect;
+    }
+}
+
+- (CGRect)frameForItemAtIndex:(int)index {
+    int i = 0;
+    for (int y = 0; y < [self numberOfRows]; y++) {
+        for (int x = 0; x < [self numberOfCollumns]; x++) {
+            if (i == index) {
+                return CGRectMake(self.itemSize.width * x,
+                                  CGRectGetHeight([self dirtyRect]) - self.itemSize.height * (y + 1),
+                                  self.itemSize.width,
+                                  self.itemSize.height);
+            }
+            i ++;
+        }
+    }
+    return CGRectZero;
+}
+
+#pragma mark - 
+#pragma mark - Appearence
+
+- (void)updateInteraction {
+    for (GridEntity *entity in self.entities) {
+        entity.view.layer.backgroundColor = [NSColor redColor].CGColor;
+        if (self.interaction == Focusing) {
+            if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.focusingTouch])) {
+                entity.view.layer.backgroundColor = [NSColor greenColor].CGColor;
+            }
+        }
+        if (self.interaction == Dragging) {
+            if (CGRectContainsPoint(entity.view.frame, self.viewSpaceDraggingPoint)) {
+                entity.view.layer.backgroundColor = [[NSColor orangeColor] colorWithAlphaComponent:0.5].CGColor;
+            }
+        }
+    }
+    if (self.interaction == Dragging) {
+        self.draggingEntity.view.layer.backgroundColor = [NSColor orangeColor].CGColor;
+    }
+}
+
+#pragma mark -
+#pragma mark - Dragging
+
+- (void)beginDragging {
+    for (GridEntity *entity in self.entities) {
+        if (CGRectContainsPoint(entity.view.frame, [self inViewSpace:self.doubleOnTouch])) {
+            [self setupDraggingShadowView];
+            self.draggingEntity = entity;
+            return;
+        }
+    }
+    self.interaction = None;
+}
+
+- (void)updateDragging {
+    self.draggingShadowView.frame = CGRectMake(self.viewSpaceDraggingPoint.x - self.itemSize.width / 2,
+                                               self.viewSpaceDraggingPoint.y - self.itemSize.height / 2,
+                                               self.itemSize.width,
+                                               self.itemSize.height);
+}
+
+- (void)successDragging {
+    [self.draggingShadowView removeFromSuperview];
+    self.draggingShadowView = nil;
+    
+    int dragDestinationIndex;
+    for (dragDestinationIndex = 0; dragDestinationIndex < [self numberOfItems]; dragDestinationIndex++) {
+        CGRect rect = [self frameForItemAtIndex:dragDestinationIndex];
+        if (CGRectContainsPoint(rect, self.viewSpaceDraggingPoint)) {
+            break;
+        }
+    }
+    
+    NSUInteger dragSourceIndex = [self.entities indexOfObject:self.draggingEntity];
+    [self.entities exchangeObjectAtIndex:dragSourceIndex withObjectAtIndex:dragDestinationIndex];
+    [self layoutGrid];
+}
+
+- (void)setupDraggingShadowView {
+    self.draggingShadowView = [NSView new];
+    self.draggingShadowView.wantsLayer = YES;
+    self.draggingShadowView.layer.backgroundColor = [NSColor colorWithWhite:1 alpha:0.3].CGColor;
+    [self addSubview:self.draggingShadowView];
+}
+
+#pragma mark - 
+#pragma mark - Touches
 
 - (void)touchesBeganWithEvent:(NSEvent *)event {
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 1) {
@@ -240,10 +278,15 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 }
 
 - (void)touchesEndedWithEvent:(NSEvent *)event {
-    [self.draggingShadowView removeFromSuperview];
-    self.draggingShadowView = nil;
-    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(endTouches:) withObject:event afterDelay:0.1];
+}
+
+- (void)endTouches:(NSEvent *)event {
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 0) {
+        if (self.interaction == Dragging) {
+            [self successDragging];
+        }
         self.interaction = None;
         [self updateInteraction];
     }
