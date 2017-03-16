@@ -23,7 +23,6 @@ typedef NS_ENUM(NSUInteger, Interaction) {
 @property (nonatomic, strong) NSTouch *doubleOnTouch;
 @property (nonatomic, strong) GridEntity *draggingEntity;
 @property (nonatomic, strong) NSView *draggingShadowView;
-@property (nonatomic, strong) NSMutableArray<GridEntity *> *entities;
 @property (nonatomic, assign) CGSize itemSize;
 @property (nonatomic, assign) int touchesBeingFilteringCount;
 
@@ -39,6 +38,12 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         _entities = [NSMutableArray new];
     }
     return _entities;
+}
+
+- (void)gridDidUpdate {
+    if (self.gridUpdated) {
+        self.gridUpdated();
+    }
 }
 
 #pragma mark -
@@ -57,6 +62,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [self addSubview:entity.view];
     [self resizeSubviewsWithOldSize:[self dirtyRect].size];
     [self updateInteraction];
+    [self gridDidUpdate];
 }
 
 - (void)deleteEntity:(GridEntity *)entity {
@@ -64,6 +70,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     [entity.view removeFromSuperview];
     [self resizeSubviewsWithOldSize:[self dirtyRect].size];
     [self updateInteraction];
+    [self gridDidUpdate];
 }
 
 - (void)replaceEntity:(GridEntity * _Nonnull)oldEntity withEntity:(GridEntity * _Nonnull)newEntity {
@@ -74,6 +81,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     
     [self resizeSubviewsWithOldSize:[self dirtyRect].size];
     [self updateInteraction];
+    [self gridDidUpdate];
 }
 
 #pragma mark - 
@@ -254,6 +262,7 @@ typedef NS_ENUM(NSUInteger, Interaction) {
         NSUInteger dragSourceIndex = [self.entities indexOfObject:self.draggingEntity];
         [self.entities exchangeObjectAtIndex:dragSourceIndex withObjectAtIndex:dragDestinationIndex];
         [self layoutGrid];
+        [self gridDidUpdate];
     }
 }
 

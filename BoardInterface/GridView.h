@@ -12,6 +12,8 @@
 @interface GridView : NSView
 
 @property (nonatomic, copy, nonnull) GridEntity * _Nonnull (^blankGridFactory)(void);
+@property (nonatomic, copy, nonnull) void (^gridUpdated)(void);
+@property (nonatomic, strong, nonnull) NSMutableArray<GridEntity *> *entities;
 
 - (void)addEntity:(GridEntity * _Nonnull)entity;
 - (void)deleteEntity:(GridEntity * _Nonnull)entity;
