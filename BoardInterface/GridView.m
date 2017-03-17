@@ -289,13 +289,15 @@ typedef NS_ENUM(NSUInteger, Interaction) {
     }
     if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 2) {
         if ([self minX:event] < [self normalizedMarginSize]) {
-            GridEntity *newEntity = self.blankGridFactory();
-            [self addEntity:newEntity];
-            self.interaction = Dragging;
-            self.draggingEntity = newEntity;
-            [self setupDraggingShadowView];
-            
-            return;
+            if (self.blankGridFactory) {
+                GridEntity *newEntity = self.blankGridFactory();
+                [self addEntity:newEntity];
+                self.interaction = Dragging;
+                self.draggingEntity = newEntity;
+                [self setupDraggingShadowView];
+                
+                return;
+            }
         }
         self.interaction = DoubleOn;
         self.doubleOnTouch = [event touchesMatchingPhase:NSTouchPhaseTouching inView:self].allObjects.firstObject;

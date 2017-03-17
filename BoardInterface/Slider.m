@@ -13,7 +13,7 @@
 - (instancetype)initWithName:(NSString *)name
                       values:(NSArray<NSString *> *)values
                selectedIndex:(int)selectedIndex
-                 valueUpdate:(void (^)(void))valueUpdate {
+                 valueUpdate:(void (^)(Slider *slider))valueUpdate {
     self = [super init];
     self.name = name;
     self.values = values;

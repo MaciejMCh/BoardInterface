@@ -169,7 +169,7 @@
 
 - (void)valueChanged:(int)steps {
     self.editingSlider.selectedIndex += steps;
-    self.editingSlider.valueUpdate();
+    self.editingSlider.valueUpdate(self.editingSlider);
     
     SliderView *editingSliderView = self.sliderViews[[self.sliders indexOfObject:self.editingSlider]];
     editingSliderView.valueLabel.stringValue = [self.editingSlider selectedValue];

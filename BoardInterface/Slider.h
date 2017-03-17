@@ -14,12 +14,12 @@
 @property (nonatomic, strong) NSArray<NSString *> *values;
 @property (nonatomic, assign) int selectedIndex;
 
-@property (nonatomic, copy) void (^valueUpdate)(void);
+@property (nonatomic, copy) void (^valueUpdate)(Slider *slider);
 
 - (instancetype)initWithName:(NSString *)name
                       values:(NSArray<NSString *> *)values
                selectedIndex:(int)selectedIndex
-                 valueUpdate:(void (^)(void))valueUpdate;
+                 valueUpdate:(void (^)(Slider *slider))valueUpdate;
 
 - (NSString *)selectedValue;
 
