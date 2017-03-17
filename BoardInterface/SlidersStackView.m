@@ -68,6 +68,10 @@
 #pragma mark -
 #pragma mark - Utilities
 
+- (CGFloat)normalizedMarginSize {
+    return 0.05;
+}
+
 - (CGRect)dirtyRect {
     return self.bounds;
 }
@@ -153,6 +157,12 @@
     [self updateAppearence:event];
     
     int touchesCount = [event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count;
+    if (touchesCount == 1) {
+        if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].allObjects.firstObject.normalizedPosition.x < [self normalizedMarginSize]) {
+            self.dismiss();
+        }
+    }
+    
     if (touchesCount >= 2) {
         CGPoint normalizedSpaceTouchingPoint = [self normalizedSpaceTouchingPoint:event];
         float normalizedDifference = normalizedSpaceTouchingPoint.y - self.lastTickPosition;

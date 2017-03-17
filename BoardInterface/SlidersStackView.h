@@ -12,5 +12,6 @@
 @interface SlidersStackView : NSView
 
 @property (nonatomic, strong) NSArray<Slider *> *sliders;
+@property (nonatomic, copy) void (^dismiss)(void);
 
 @end
