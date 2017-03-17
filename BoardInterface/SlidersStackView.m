@@ -157,11 +157,6 @@
     [self updateAppearence:event];
     
     int touchesCount = [event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count;
-    if (touchesCount == 1) {
-        if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].allObjects.firstObject.normalizedPosition.x < [self normalizedMarginSize]) {
-            self.dismiss();
-        }
-    }
     
     if (touchesCount >= 2) {
         CGPoint normalizedSpaceTouchingPoint = [self normalizedSpaceTouchingPoint:event];
@@ -187,6 +182,12 @@
 
 - (void)touchesEndedWithEvent:(NSEvent *)event {
     [self updateAppearence:event];
+    
+    if ([event touchesMatchingPhase:NSTouchPhaseTouching inView:self].count == 0) {
+        if ([event touchesMatchingPhase:NSTouchPhaseEnded | NSTouchPhaseCancelled inView:self].allObjects.firstObject.normalizedPosition.x < [self normalizedMarginSize]) {
+            self.dismiss();
+        }
+    }
 }
 
 - (void)touchesCancelledWithEvent:(NSEvent *)event {
